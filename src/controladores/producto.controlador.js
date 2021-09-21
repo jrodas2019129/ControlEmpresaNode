@@ -3,8 +3,6 @@
 var Usuario = require("../modelos/usuario.model");
 var Empresa = require("../modelos/empresa.model");
 var Producto = require("../modelos/producto.model");
-var bcrypt = require('bcrypt-nodejs');
-var jwt = require("../servicios/jwt");
 var fs = require('fs');
 var path = require('path');
 
@@ -45,6 +43,26 @@ function registrarProducto(req, res) {
     }
 }
 
+function aumentarProductos(req, res) {
+    var params = req.body;
+    var stock = Number(params.stock)
+
+    Producto.findOneAndUpdate({ _id: params._id }, { $inc: { stock: stock } }, { new: true }, (err, productoEditado) => {
+        return res.status(200).send({ productoEditado })
+    })
+}
+
+function ventaProductos(req, res) {
+    var params = req.body;
+    var stock = Number(params.stock)
+
+    Producto.findOneAndUpdate({ _id: params._id }, { $inc: { stock: stock } }, { new: true }, (err, productoEditado) => {
+        return res.status(200).send({ productoEditado })
+    })
+}
+
 module.exports = {
-    registrarProducto
+    registrarProducto,
+    aumentarProductos,
+    ventaProductos
 }

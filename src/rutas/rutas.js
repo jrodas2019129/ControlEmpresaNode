@@ -21,8 +21,12 @@ api.post("/login", empresaControlador.login);
 api.post("/registrarEmpresa", md_autorizacion.ensureAuth, empresaControlador.registrarEmpresa);
 api.put("/editarEmpresa", md_autorizacion.ensureAuth, empresaControlador.editarEmpresa);
 api.delete("/eliminarEmpresa", md_autorizacion.ensureAuth, empresaControlador.eliminarEmpresa)
+api.get("/obtenerEmpresaID/:id", md_autorizacion.ensureAuth, empresaControlador.obtenerEmpresaID);
+api.get("/obtenerEmpresas", md_autorizacion.ensureAuth, empresaControlador.obtenerEmpresas);
 
 // Funciones Controlador Producto
-api.post("/registrarProducto", md_autorizacion.ensureAuth, productoControlador.registrarProducto)
+api.post("/registrarProducto", md_autorizacion.ensureAuth, productoControlador.registrarProducto);
+api.post("/aumentarProductos", productoControlador.aumentarProductos)
+api.post("/ventaProductos", productoControlador.ventaProductos)
 
 module.exports = api;

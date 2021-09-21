@@ -133,10 +133,35 @@ function eliminarEmpresa(req, res) {
     }
 }
 
+function obtenerEmpresaID(req, res) {
+    var empresaID = req.params.id;
+
+    if (req.user.rol === "ROL_ADMIN") {
+        Empresa.findById(empresaID, (err, empresaEncontrada) => {
+            if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
+            if (!empresaEncontrada) return res.status(500).send({ mensaje: 'Error al obtener la empresa.' });
+            return res.status(200).send({ empresaEncontrada });
+        })
+    }
+}
+
+function obtenerEmpresas(req, res) {
+
+    if (req.user.rol === "ROL_ADMIN") {
+        Empresa.find().exec((err, empresasEncontradas) => {
+            if (err) return res.status(500).send({ mensaje: 'Error en la peticion de obtener Usuarios' });
+            if (!empresasEncontradas) return res.status(500).send({ mensaje: 'Error en la consutla de Usuarios o no tiene datos' });
+            return res.status(200).send({ empresasEncontradas });
+        })
+    }
+}
+
 module.exports = {
     adminApp,
     login,
     registrarEmpresa,
     editarEmpresa,
-    eliminarEmpresa
+    eliminarEmpresa,
+    obtenerEmpresaID,
+    obtenerEmpresas
 }
