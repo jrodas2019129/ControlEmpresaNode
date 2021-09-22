@@ -85,19 +85,47 @@ function eliminarUsuario(req, res) {
 }
 
 function obtenerUsuarioID(req, res) {
+    var empresaID = req.user.sub;
+    var params = req.body;
 
+    Usuario.find({ 'empresa': empresaID, _id: params._id }, (err, usuarioEncontrado) => {
+        if (err) res.status(500).send({ mensaje: 'No existe o no es parte de la empresa el empleado que busca' })
+        return res.status(200).send({ usuarioEncontrado })
+
+    })
 }
 
 function obtenerUsuarioNom(req, res) {
+    var empresaID = req.user.sub;
+    var params = req.body;
 
+    Usuario.find({ 'empresa': empresaID, username: params.username }, (err, usuarioEncontrado) => {
+        if (err) res.status(500).send({ mensaje: 'No existe o no es parte de la empresa el empleado que busca' })
+        return res.status(200).send({ usuarioEncontrado })
+
+    })
 }
 
 function obtenerUsuarioPuesto(req, res) {
+    var empresaID = req.user.sub;
+    var params = req.body;
 
+    Usuario.find({ 'empresa': empresaID, puesto: params.puesto }, (err, usuarioEncontrado) => {
+        if (err) res.status(500).send({ mensaje: 'No existe o no es parte de la empresa el empleado que busca' })
+        return res.status(200).send({ usuarioEncontrado })
+
+    })
 }
 
 function obtenerUsuarioDep(req, res) {
+    var empresaID = req.user.sub;
+    var params = req.body;
 
+    Usuario.find({ 'empresa': empresaID, departamento: params.departamento }, (err, usuarioEncontrado) => {
+        if (err) res.status(500).send({ mensaje: 'No existe o no es parte de la empresa el empleado que busca' })
+        return res.status(200).send({ usuarioEncontrado })
+
+    })
 }
 
 function obtenerUsuariosEmpresa(req, res) {

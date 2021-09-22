@@ -7,16 +7,17 @@ var fs = require('fs');
 var path = require('path');
 
 function registrarProducto(req, res) {
-    var productoModel = new Producto();
+    var empresaID = req.user.sub
     var params = req.body;
 
     if (req.user.rol === 'ROL_EMPRESA') {
         if (params.nombre) {
+            var productoModel = new Producto();
             productoModel.nombre = params.nombre;
             productoModel.nombreProveedor = params.nombreProveedor;
             productoModel.stock = params.stock;
             productoModel.cantidadVendida = 0;
-            productoModel.empresa = req.user.sub;
+            productoModel.empresa = empresaID;
 
             Producto.find({
                 nombre: params.nombre
@@ -44,25 +45,34 @@ function registrarProducto(req, res) {
 }
 
 function aumentarProductos(req, res) {
+    var empresaID = req.user.sub;
     var params = req.body;
     var stock = Number(params.stock)
 
-    Producto.findOneAndUpdate({ _id: params._id }, { $inc: { stock: stock } }, { new: true }, (err, productoEditado) => {
+    Producto.findOneAndUpdate({ 'empresa': empresaID, _id: params._id }, { $inc: { stock: stock } }, { new: true }, (err, productoEditado) => {
         return res.status(200).send({ productoEditado })
+
+    })
+}
+
+function obtenerProductoNom(req, res) {
+    var empresaID = req.user.sub;
+    var params = req.body;
+
+    Producto.find({ 'empresa': empresaID, nombre: params.nombre }, (err, productoEncontrado) => {
+        if (err) res.status(500).send({ mensaje: 'No encontramos el producto que desea' })
+        return res.status(200).send({ productoEncontrado })
+
     })
 }
 
 function ventaProductos(req, res) {
-    var params = req.body;
-    var stock = Number(params.stock)
 
-    Producto.findOneAndUpdate({ _id: params._id }, { $inc: { stock: stock } }, { new: true }, (err, productoEditado) => {
-        return res.status(200).send({ productoEditado })
-    })
 }
 
 module.exports = {
     registrarProducto,
     aumentarProductos,
+    obtenerProductoNom,
     ventaProductos
 }

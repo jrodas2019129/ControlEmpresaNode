@@ -11,8 +11,10 @@ var productoControlador = require("../controladores/producto.controlador");
 api.post("/registrarUsuario", md_autorizacion.ensureAuth, usuarioControlador.registrarUsuario);
 api.put("/editarUsuario", md_autorizacion.ensureAuth, usuarioControlador.editarUsuario);
 api.delete("/eliminarUsuario", md_autorizacion.ensureAuth, usuarioControlador.eliminarUsuario);
-api.get("/obtenerUsuarioID", usuarioControlador.obtenerUsuarioID);
-api.get("/obtenerUsuarioNom", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuarioNom);
+api.get("/obtenerUsuarioID", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuarioID);
+api.get("/obtenerUsuarioDep", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuarioDep)
+api.get("/obtenerUsuarioPuesto", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuarioPuesto);
+api.get("/obtenerUsuarioDep", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuarioDep)
 api.get("/obtenerUsuariosEmpresa/:id?", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuariosEmpresa)
 
 
@@ -26,7 +28,8 @@ api.get("/obtenerEmpresas", md_autorizacion.ensureAuth, empresaControlador.obten
 
 // Funciones Controlador Producto
 api.post("/registrarProducto", md_autorizacion.ensureAuth, productoControlador.registrarProducto);
-api.post("/aumentarProductos", productoControlador.aumentarProductos)
+api.post("/aumentarProductos", md_autorizacion.ensureAuth, productoControlador.aumentarProductos);
+api.get("/obtenerProductoNom", md_autorizacion.ensureAuth, productoControlador.obtenerProductoNom);
 api.post("/ventaProductos", productoControlador.ventaProductos)
 
 module.exports = api;
