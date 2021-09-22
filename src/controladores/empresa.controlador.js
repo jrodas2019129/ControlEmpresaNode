@@ -124,7 +124,11 @@ function eliminarEmpresa(req, res) {
     var params = req.body;
 
     if (req.user.rol === 'ROL_ADMIN') {
-        Empresa.deleteOne({ _id: params._id }, (err, empresaEliminada) => {
+        Empresa.deleteOne({ _id: params._id }, {
+            $set: {
+                username: params.username
+            }
+        }, { new: true }, (err, empresaEliminada) => {
             if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
             if (!empresaEliminada) return res.status(500).send({ mensaje: 'No se a podido eliminar a la Empresa' });
 
@@ -137,7 +141,7 @@ function obtenerEmpresaID(req, res) {
     var empresaID = req.params.id;
 
     if (req.user.rol === "ROL_ADMIN") {
-        Empresa.findById(empresaID, (err, empresaEncontrada) => {
+        Empresa.findOne({ empresaID, rol: "ROL_EMPRESA" }, (err, empresaEncontrada) => {
             if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
             if (!empresaEncontrada) return res.status(500).send({ mensaje: 'Error al obtener la empresa.' });
             return res.status(200).send({ empresaEncontrada });
@@ -148,7 +152,7 @@ function obtenerEmpresaID(req, res) {
 function obtenerEmpresas(req, res) {
 
     if (req.user.rol === "ROL_ADMIN") {
-        Empresa.find().exec((err, empresasEncontradas) => {
+        Empresa.find({ rol: "ROL_EMPRESA" }).exec((err, empresasEncontradas) => {
             if (err) return res.status(500).send({ mensaje: 'Error en la peticion de obtener Usuarios' });
             if (!empresasEncontradas) return res.status(500).send({ mensaje: 'Error en la consutla de Usuarios o no tiene datos' });
             return res.status(200).send({ empresasEncontradas });

@@ -5,11 +5,9 @@ var Schema = mongoose.Schema;
 
 var UsuarioSchema = Schema({
     username: String,
-    password: String,
     empresa: { type: Schema.ObjectId, ref: 'empresas' },
     puesto: String,
     departamento: String,
-    rol: String,
     imagen: String
 });
 

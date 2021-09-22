@@ -12,38 +12,32 @@ function registrarUsuario(req, res) {
     var params = req.body;
 
     if (req.user.rol === 'ROL_EMPRESA') {
-        if (params.username && params.password) {
+        if (params.username) {
             usuarioModel.username = params.username;
             usuarioModel.empresa = req.user.sub;
             usuarioModel.puesto = params.puesto;
             usuarioModel.departamento = params.departamento;
-            usuarioModel.rol = "ROL_USUARIO";
             usuarioModel.image = null;
-            Usuario.find({
-                username: params.username
-            }).exec((err, adminoEncontrado) => {
-                if (err) return console.log({ mensaje: "Error en la peticion" });
-                if (adminoEncontrado.length >= 1) {
-                    return res.status(500).send("Este usuario ya existe");
-                } else {
-                    bcrypt.hash(params.password, null, null, (err, passwordEncriptada) => {
-                        usuarioModel.password = passwordEncriptada;
-                        usuarioModel.save((err, usuarioguardado) => {
-                            if (err) return res.status(500).send({ mensaje: "Error en la peticion" });
-                            if (usuarioguardado) {
-                                res.status(200).send({ usuarioguardado });
-                            } else {
-                                res.status(500).send({ mensaje: "Error al registrar el usuario" });
-                            }
-                        });
+            Usuario.findOne({ username: params.username, empresa: req.user.sub }).exec((err, adminoEncontrado) => {
+                if (err) return res.status(500).send({ mensaje: 'error en la peticion' });
+                if (!adminoEncontrado) {
+                    usuarioModel.save((err, adminoEncontrado) => {
+                        if (err) return res.status(500).send({ mensaje: 'error en la peticion' });
+                        if (!adminoEncontrado) return res.status(500).send({ mensaje: 'no se guardó la liga' });
+                        return res.status(200).send({ adminoEncontrado });
                     });
+
+                } else {
+                    return res.status(500).send({ mensaje: 'este equipo ya existe' });
                 }
             });
+
         } else {
-            if (err) return res.status(500).send({ mensaje: "No puede deje espacios vacios" });
+            return res.status(500).send({ mensaje: 'no puede dejar parametros vacios' });
         }
+
     } else {
-        return res.status(500).send({ mensaje: 'Solo la Empresa puede registrar Empleados' })
+        return res.status(500).send({ mensaje: 'no tienes permisos' });
     }
 }
 
@@ -143,6 +137,26 @@ function obtenerUsuariosEmpresa(req, res) {
     })
 }
 
+function verEmpleados(req, res) {
+
+    Usuario.find({ empresa: req.user.sub }, (err, usuarioEncontradas) => {
+        if (err) return res.status(500).send({ mensaje: 'error en la peticion' });
+        if (!usuarioEncontradas) return res.status(500).send({ mensaje: 'Aún no hay ligas' });
+
+        return res.status(200).send({ usuarioEncontradas });
+    });
+}
+
+function obtenerEmpleado(req, res) {
+    var id = req.params.id;
+
+    Usuario.findOne({ _id: id }, (err, usuario_registrado) => {
+        if (err) return res.status(500).send({ mensaje: "Error en peticion" });
+        if (!usuario_registrado) return res.status(500).send({ mensaje: "Error en peticion" });
+        return res.status(200).send({ usuario_registrado });
+    })
+
+}
 module.exports = {
     registrarUsuario,
     editarUsuario,
@@ -151,5 +165,8 @@ module.exports = {
     obtenerUsuarioNom,
     obtenerUsuarioPuesto,
     obtenerUsuarioDep,
-    obtenerUsuariosEmpresa
+    obtenerUsuariosEmpresa,
+    verEmpleados,
+    obtenerEmpleado
+
 }
