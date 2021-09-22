@@ -1,6 +1,9 @@
 'use strict'
 var express = require("express");
+var multiparty = require("connect-multiparty");
+
 var md_autorizacion = require("../middlewares/authenticated.js");
+var md_subir = multiparty({ uploadDir: './src/imagenes/empresas' })
 
 var api = express.Router();
 var usuarioControlador = require("../controladores/usuario.controlador");
@@ -28,6 +31,8 @@ api.put("/editarEmpresa", md_autorizacion.ensureAuth, empresaControlador.editarE
 api.delete("/eliminarEmpresa", md_autorizacion.ensureAuth, empresaControlador.eliminarEmpresa)
 api.get("/obtenerEmpresaID/:id", md_autorizacion.ensureAuth, empresaControlador.obtenerEmpresaID);
 api.get("/obtenerEmpresas", md_autorizacion.ensureAuth, empresaControlador.obtenerEmpresas);
+api.post("/subirImagen", [md_autorizacion.ensureAuth, md_subir], empresaControlador.subirImagen)
+api.get('/obtenerImagen/:imagen', empresaControlador.obtenerImagen);
 
 // Funciones Controlador Producto
 api.post("/registrarProducto", md_autorizacion.ensureAuth, productoControlador.registrarProducto);
