@@ -29,7 +29,10 @@ api.get("/obtenerEmpresas", md_autorizacion.ensureAuth, empresaControlador.obten
 // Funciones Controlador Producto
 api.post("/registrarProducto", md_autorizacion.ensureAuth, productoControlador.registrarProducto);
 api.post("/aumentarProductos", md_autorizacion.ensureAuth, productoControlador.aumentarProductos);
+api.get("/obtenerProductosCantidadMayor", md_autorizacion.ensureAuth, productoControlador.obtenerProductosCantidadMayor);
+api.get("/obtenerProductosCantidadMenor", md_autorizacion.ensureAuth, productoControlador.obtenerProductosCantidadMenor);
 api.get("/obtenerProductoNom", md_autorizacion.ensureAuth, productoControlador.obtenerProductoNom);
+api.get("/obtenerProductoPro", md_autorizacion.ensureAuth, productoControlador.obtenerProductoPro);
 api.post("/ventaProductos", productoControlador.ventaProductos)
 
 module.exports = api;
