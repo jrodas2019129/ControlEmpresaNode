@@ -57,9 +57,8 @@ function aumentarProductos(req, res) {
 
 function obtenerProductosCantidadMayor(req, res) {
     var empresaID = req.user.sub;
-    var sortMayor = { stock: -1 };
 
-    Producto.find({ 'empresa': empresaID, sortMayor }, (err, productoEncontrado) => {
+    Producto.find({ 'empresa': empresaID }, (err, productoEncontrado) => {
         if (err) res.status(500).send({ mensaje: 'No encontramos el producto que desea' })
         return res.status(200).send({ productoEncontrado })
 
@@ -68,9 +67,8 @@ function obtenerProductosCantidadMayor(req, res) {
 
 function obtenerProductosCantidadMenor(req, res) {
     var empresaID = req.user.sub;
-    var sortMenor = { stock: 1 };
 
-    Producto.find({ 'empresa': empresaID, sortMenor }, (err, productoEncontrado) => {
+    Producto.find({ 'empresa': empresaID }, (err, productoEncontrado) => {
         if (err) res.status(500).send({ mensaje: 'No encontramos el producto que desea' })
         return res.status(200).send({ productoEncontrado })
 

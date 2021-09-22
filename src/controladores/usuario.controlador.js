@@ -141,7 +141,7 @@ function verEmpleados(req, res) {
 
     Usuario.find({ empresa: req.user.sub }, (err, usuarioEncontradas) => {
         if (err) return res.status(500).send({ mensaje: 'error en la peticion' });
-        if (!usuarioEncontradas) return res.status(500).send({ mensaje: 'Aún no hay ligas' });
+        if (!usuarioEncontradas) return res.status(500).send({ mensaje: 'Aún no hay empleados' });
 
         return res.status(200).send({ usuarioEncontradas });
     });
@@ -157,6 +157,20 @@ function obtenerEmpleado(req, res) {
     })
 
 }
+
+function obtenerGeneral(req, res) {
+    var empresaID = req.user.sub;
+    var params = req.body;
+
+    Usuario.find({ 'empresa': empresaID, username: params.username, departamento: params.departamento }, (err, usuarioEncontrado) => {
+        if (err) res.status(500).send({ mensaje: 'No existe o no es parte de la empresa el empleado que busca' })
+        return res.status(200).send({ usuarioEncontrado })
+
+    })
+
+
+}
+
 module.exports = {
     registrarUsuario,
     editarUsuario,
@@ -167,6 +181,6 @@ module.exports = {
     obtenerUsuarioDep,
     obtenerUsuariosEmpresa,
     verEmpleados,
-    obtenerEmpleado
-
+    obtenerEmpleado,
+    obtenerGeneral
 }

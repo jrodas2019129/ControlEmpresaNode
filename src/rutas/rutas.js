@@ -18,6 +18,7 @@ api.get("/obtenerUsuarioDep", md_autorizacion.ensureAuth, usuarioControlador.obt
 api.get("/obtenerUsuariosEmpresa/:id?", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuariosEmpresa)
 api.get("/verEmpleados", md_autorizacion.ensureAuth, usuarioControlador.verEmpleados);
 api.get("/obtenerEmpleado/:id", md_autorizacion.ensureAuth, usuarioControlador.obtenerEmpleado);
+api.get("/obtenerGeneral", md_autorizacion.ensureAuth, usuarioControlador.obtenerGeneral);
 
 
 // Funciones Controlador Empresa
