@@ -160,6 +160,54 @@ function obtenerEmpresas(req, res) {
     }
 }
 
+function eliminarArchivo(res, rutaArchivo, mensaje) {
+    fs.unlink(rutaArchivo, (err) => {
+        return res.status(500).send({ mensaje: mensaje })
+    })
+}
+
+function subirImagen(req, res) {
+    var empresaID = req.user.sub;
+
+    if (req.files) {
+        var direccionArchivo = req.files.imagen.path;
+        console.log(direccionArchivo);
+
+        var direccion_split = direccionArchivo.split('\\')
+        console.log(direccion_split);
+
+        var nombre_archivo = direccion_split[3];
+        console.log(nombre_archivo);
+
+        var extension_archivo = nombre_archivo.split('.');
+        console.log(extension_archivo);
+
+        var nombre_extension = extension_archivo[1].toLowerCase();
+        console.log(nombre_extension);
+
+        if (nombre_extension === 'png' || nombre_extension === 'jpg' || nombre_extension === 'gif') {
+            Empresa.findByIdAndUpdate(empresaID, { imagen: nombre_archivo }, { new: true }, (err, empresaEncontrado) => {
+                return res.status(200).send({ empresaEncontrado });
+            })
+        } else {
+            return eliminarArchivo(res, direccionArchivo, 'Extension, no permitida');
+        }
+    }
+}
+
+function obtenerImagen(req, res) {
+    var nombreImagen = req.params.imagen;
+    var rutaArchivo = `./src/imagenes/empresas/${nombreImagen}`;
+
+    fs.exists(rutaArchivo, (exists) => {
+        if (exists) {
+            return res.sendFile(path.resolve(rutaArchivo));
+        } else {
+            return res.status(500).send({ mensaje: 'No existe la imagen' });
+        }
+    })
+}
+
 module.exports = {
     adminApp,
     login,
@@ -167,5 +215,7 @@ module.exports = {
     editarEmpresa,
     eliminarEmpresa,
     obtenerEmpresaID,
-    obtenerEmpresas
+    obtenerEmpresas,
+    subirImagen,
+    obtenerImagen
 }
