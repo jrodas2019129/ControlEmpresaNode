@@ -99,9 +99,16 @@ function ventaProductos(req, res) {
     var params = req.body;
     var cantidadVendida = Number(params.cantidadVendida)
 
-    Producto.findOneAndUpdate({ _id: params._id }, { $inc: { cantidadVendida: cantidadVendida, stock: -cantidadVendida } }, { new: true }, (err, productoEditado) => {
-        return res.status(200).send({ productoEditado })
+    Producto.findOne({ _id: params._id }, (err, productoEncontrado) => {
+        if (err) res.status(500).send({ mensaje: 'error' });
 
+        if (productoEncontrado.stock < cantidadVendida) {
+            return res.status(200).send({ mensaje: 'No hay sufiente producto para realizar la venta' });
+        } else {
+            Producto.findOneAndUpdate({ _id: params._id }, { $inc: { cantidadVendida: cantidadVendida, stock: -cantidadVendida } }, { new: true }, (err, productoEditado) => {
+                return res.status(200).send({ productoEditado });
+            });
+        }
     })
 }
 
