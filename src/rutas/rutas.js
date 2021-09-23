@@ -45,5 +45,9 @@ api.get("/obtenerProductosCantidadMenor", md_autorizacion.ensureAuth, productoCo
 api.get("/obtenerProductoNom", md_autorizacion.ensureAuth, productoControlador.obtenerProductoNom);
 api.get("/obtenerProductoPro", md_autorizacion.ensureAuth, productoControlador.obtenerProductoPro);
 api.post("/ventaProductos", productoControlador.ventaProductos)
+api.put("/editarProducto", md_autorizacion.ensureAuth, productoControlador.editarProducto);
+api.delete("/eliminarProducto", md_autorizacion.ensureAuth, productoControlador.eliminarProducto);
+api.get("/verProductos", md_autorizacion.ensureAuth, productoControlador.verProductos);
+api.get("/obtenerProducto/:id", md_autorizacion.ensureAuth, productoControlador.obtenerProducto);
 
 module.exports = api;
