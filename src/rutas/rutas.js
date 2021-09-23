@@ -15,13 +15,16 @@ api.post("/registrarUsuario", md_autorizacion.ensureAuth, usuarioControlador.reg
 api.put("/editarUsuario", md_autorizacion.ensureAuth, usuarioControlador.editarUsuario);
 api.delete("/eliminarUsuario", md_autorizacion.ensureAuth, usuarioControlador.eliminarUsuario);
 api.get("/obtenerUsuarioID", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuarioID);
+api.post("/obtenerUsuarioNom", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuarioNom);
+api.post('/obtenerEmpleadoNombre', md_autorizacion.ensureAuth, usuarioControlador.obtenerEmpleadoNombre);
+
 api.get("/obtenerUsuarioDep", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuarioDep)
 api.get("/obtenerUsuarioPuesto", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuarioPuesto);
 api.get("/obtenerUsuarioDep", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuarioDep)
 api.get("/obtenerUsuariosEmpresa/:id?", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuariosEmpresa)
 api.get("/verEmpleados", md_autorizacion.ensureAuth, usuarioControlador.verEmpleados);
 api.get("/obtenerEmpleado/:id", md_autorizacion.ensureAuth, usuarioControlador.obtenerEmpleado);
-api.get("/obtenerGeneral", md_autorizacion.ensureAuth, usuarioControlador.obtenerGeneral);
+api.post("/obtenerGeneral", md_autorizacion.ensureAuth, usuarioControlador.obtenerGeneral);
 
 
 // Funciones Controlador Empresa
