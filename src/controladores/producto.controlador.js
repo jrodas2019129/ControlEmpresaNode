@@ -18,7 +18,8 @@ function registrarProducto(req, res) {
             productoModel.empresa = empresaID;
 
             Producto.find({
-                nombre: params.nombre
+                nombre: params.nombre,
+                empresa: req.user.sub
             }).exec((err, productoNoEncontrado) => {
                 if (err) return console.log({ mensaje: "Error en la peticion" });
                 if (productoNoEncontrado.length >= 1) {
@@ -105,6 +106,63 @@ function ventaProductos(req, res) {
     })
 }
 
+function editarProducto(req, res) {
+    var params = req.body;
+
+    delete params.password;
+    delete params.rol;
+
+    if (req.user.rol === 'ROL_EMPRESA') {
+        Producto.updateOne({ _id: params._id }, {
+            $set: {
+                nombre: params.nombre,
+                nombreProveedor: params.nombreProveedor,
+                stock: params.stock,
+            }
+        }, { new: true }, (err, productoEncontrado) => {
+            if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
+            if (!productoEncontrado) return res.status(500).send({ mensaje: 'No se a podido editar al Usuario' });
+
+            return res.status(200).send({ productoEncontrado })
+        })
+    } else {
+        return res.status(500).send({ message: 'No tienes permiso para actualizar los datos' });
+    }
+}
+
+function eliminarProducto(req, res) {
+    var params = req.body;
+
+    if (req.user.rol === 'ROL_EMPRESA') {
+        Producto.deleteOne({ _id: params._id }, (err, productoEliminada) => {
+            if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
+            if (!productoEliminada) return res.status(500).send({ mensaje: 'No se a podido eliminar a la Empresa' });
+
+            return res.status(200).send({ productoEliminada })
+        })
+    }
+}
+
+function verProductos(req, res) {
+
+    Producto.find({ empresa: req.user.sub }, (err, productoEncontradas) => {
+        if (err) return res.status(500).send({ mensaje: 'error en la peticion' });
+        if (!productoEncontradas) return res.status(500).send({ mensaje: 'Aún no hay empleados' });
+
+        return res.status(200).send({ productoEncontradas });
+    });
+}
+
+function obtenerProducto(req, res) {
+    var id = req.params.id;
+
+    Producto.findOne({ _id: id }, (err, producto_registrado) => {
+        if (err) return res.status(500).send({ mensaje: "Error en peticion" });
+        if (!producto_registrado) return res.status(500).send({ mensaje: "Error en peticion" });
+        return res.status(200).send({ producto_registrado });
+    })
+
+}
 module.exports = {
     registrarProducto,
     aumentarProductos,
@@ -112,5 +170,9 @@ module.exports = {
     obtenerProductosCantidadMenor,
     obtenerProductoNom,
     obtenerProductoPro,
-    ventaProductos
+    ventaProductos,
+    editarProducto,
+    eliminarProducto,
+    verProductos,
+    obtenerProducto
 }
