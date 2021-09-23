@@ -1,9 +1,6 @@
 'use strict'
 // IMPORTACIONES
 var Usuario = require("../modelos/usuario.model");
-var Empresa = require("../modelos/empresa.model");
-var bcrypt = require('bcrypt-nodejs');
-var jwt = require("../servicios/jwt");
 var fs = require('fs');
 var path = require('path');
 

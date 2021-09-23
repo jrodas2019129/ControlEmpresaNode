@@ -1,7 +1,5 @@
 'use strict'
 // IMPORTACIONES
-var Usuario = require("../modelos/usuario.model");
-var Empresa = require("../modelos/empresa.model");
 var Producto = require("../modelos/producto.model");
 var fs = require('fs');
 var path = require('path');
@@ -98,7 +96,13 @@ function obtenerProductoPro(req, res) {
 }
 
 function ventaProductos(req, res) {
+    var params = req.body;
+    var cantidadVendida = Number(params.cantidadVendida)
 
+    Producto.findOneAndUpdate({ _id: params._id }, { $inc: { cantidadVendida: cantidadVendida, stock: -cantidadVendida } }, { new: true }, (err, productoEditado) => {
+        return res.status(200).send({ productoEditado })
+
+    })
 }
 
 module.exports = {
