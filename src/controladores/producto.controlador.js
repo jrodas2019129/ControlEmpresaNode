@@ -184,6 +184,7 @@ function obtenerProducto(req, res) {
     })
 
 }
+
 module.exports = {
     registrarProducto,
     aumentarProductos,
