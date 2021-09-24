@@ -150,10 +150,12 @@ function obtenerGeneral(req, res) {
                     if (err) res.status(500).send({ mensaje: 'No existe o no es parte de la empresa el empleado que busca' })
                     if (usuarioEncontrado) return res.status(200).send({ usuarioEncontrado })
 
+
                 })
             })
 
         })
+
 
     } else res.status(500).send({ mensaje: "No tienes permisos" });
 }

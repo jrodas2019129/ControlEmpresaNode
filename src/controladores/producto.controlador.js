@@ -44,11 +44,13 @@ function registrarProducto(req, res) {
 }
 
 function aumentarProductos(req, res) {
-    var empresaID = req.user.sub;
+    // var empresaID = req.user.sub;
     var params = req.body;
     var stock = Number(params.stock)
 
-    Producto.findOneAndUpdate({ 'empresa': empresaID, _id: params._id }, { $inc: { stock: stock } }, { new: true }, (err, productoEditado) => {
+    //Producto.findOneAndUpdate({ 'empresa': empresaID, _id: params._id }, { $inc: { stock: stock } }, { new: true }, (err, productoEditado) => {
+    Producto.findOneAndUpdate({ _id: params._id }, { $inc: { stock: stock } }, { new: true }, (err, productoEditado) => {
+
         return res.status(200).send({ productoEditado })
 
     })
@@ -185,6 +187,25 @@ function obtenerProducto(req, res) {
 
 }
 
+
+function obtenerGeneralProducto(req, res) {
+    var empresaID = req.user.sub;
+    var params = req.body;
+    if (req.user.rol === 'ROL_EMPRESA') {
+        Producto.findOne({ 'empresa': empresaID, nombre: params.nombre }, (err, productoEncontrado) => {
+            if (err) res.status(500).send({ mensaje: 'No encontramos el producto que desea' })
+            if (productoEncontrado) return res.status(200).send({ productoEncontrado })
+
+            Producto.findOne({ 'empresa': empresaID, nombreProveedor: params.nombreProveedor }, (err, productoEncontrado) => {
+                if (err) res.status(500).send({ mensaje: 'No encontramos el producto que desea' })
+                if (productoEncontrado) return res.status(200).send({ productoEncontrado })
+
+            })
+        })
+
+    } else res.status(500).send({ mensaje: "No tienes permisos" });
+}
+
 module.exports = {
     registrarProducto,
     aumentarProductos,
@@ -197,5 +218,6 @@ module.exports = {
     eliminarProducto,
     verProductos,
     obtenerProducto,
-    eliminarProductoNombre
+    eliminarProductoNombre,
+    obtenerGeneralProducto
 }
