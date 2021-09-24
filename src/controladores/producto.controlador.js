@@ -150,6 +150,20 @@ function eliminarProducto(req, res) {
     }
 }
 
+function eliminarProductoNombre(req, res) {
+    var params = req.body;
+
+    Producto.findOne({ nombre: params.nombre }, (err, productoEncontrado) => {
+        if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
+        if (productoEncontrado) {
+            Producto.findByIdAndDelete(productoEncontrado._id, (err, productoEliminado) => {
+                if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
+                return res.status(200).send({ productoEliminado });
+            });
+        }
+    })
+}
+
 function verProductos(req, res) {
 
     Producto.find({ empresa: req.user.sub }, (err, productoEncontradas) => {
@@ -181,5 +195,6 @@ module.exports = {
     editarProducto,
     eliminarProducto,
     verProductos,
-    obtenerProducto
+    obtenerProducto,
+    eliminarProductoNombre
 }

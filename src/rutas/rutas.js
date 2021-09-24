@@ -49,5 +49,6 @@ api.put("/editarProducto", md_autorizacion.ensureAuth, productoControlador.edita
 api.delete("/eliminarProducto", md_autorizacion.ensureAuth, productoControlador.eliminarProducto);
 api.get("/verProductos", md_autorizacion.ensureAuth, productoControlador.verProductos);
 api.get("/obtenerProducto/:id", md_autorizacion.ensureAuth, productoControlador.obtenerProducto);
+api.post("/eliminarProductoNombre", productoControlador.eliminarProductoNombre);
 
 module.exports = api;
