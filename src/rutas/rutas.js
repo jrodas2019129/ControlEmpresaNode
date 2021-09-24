@@ -17,7 +17,6 @@ api.delete("/eliminarUsuario", md_autorizacion.ensureAuth, usuarioControlador.el
 api.get("/obtenerUsuarioID", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuarioID);
 api.post("/obtenerUsuarioNom", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuarioNom);
 api.post('/obtenerEmpleadoNombre', md_autorizacion.ensureAuth, usuarioControlador.obtenerEmpleadoNombre);
-
 api.get("/obtenerUsuarioDep", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuarioDep)
 api.get("/obtenerUsuarioPuesto", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuarioPuesto);
 api.get("/obtenerUsuarioDep", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuarioDep)
@@ -31,7 +30,7 @@ api.post("/obtenerGeneral", md_autorizacion.ensureAuth, usuarioControlador.obten
 api.post("/login", empresaControlador.login);
 api.post("/registrarEmpresa", md_autorizacion.ensureAuth, empresaControlador.registrarEmpresa);
 api.put("/editarEmpresa", md_autorizacion.ensureAuth, empresaControlador.editarEmpresa);
-api.delete("/eliminarEmpresa", md_autorizacion.ensureAuth, empresaControlador.eliminarEmpresa)
+api.post("/eliminarEmpresa", empresaControlador.eliminarEmpresa)
 api.get("/obtenerEmpresaID/:id", md_autorizacion.ensureAuth, empresaControlador.obtenerEmpresaID);
 api.get("/obtenerEmpresas", md_autorizacion.ensureAuth, empresaControlador.obtenerEmpresas);
 api.post("/subirImagen", [md_autorizacion.ensureAuth, md_subir], empresaControlador.subirImagen)

@@ -122,18 +122,15 @@ function editarEmpresa(req, res) {
 function eliminarEmpresa(req, res) {
     var params = req.body;
 
-    if (req.user.rol === 'ROL_ADMIN') {
-        Empresa.deleteOne({ _id: params._id }, {
-            $set: {
-                username: params.username
-            }
-        }, { new: true }, (err, empresaEliminada) => {
-            if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
-            if (!empresaEliminada) return res.status(500).send({ mensaje: 'No se a podido eliminar a la Empresa' });
-
-            return res.status(200).send({ empresaEliminada })
-        })
-    }
+    Empresa.findOne({ username: params.username }, (err, empresaEncontrada) => {
+        if (err) return res.status(500).send({ mensaje: 'Error en la peticiones' });
+        if (empresaEncontrada) {
+            Empresa.findByIdAndDelete(empresaEncontrada._id, (err, empresaEliminada) => {
+                if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
+                return res.status(200).send({ empresaEliminada });
+            });
+        }
+    })
 }
 
 function obtenerEmpresaID(req, res) {
