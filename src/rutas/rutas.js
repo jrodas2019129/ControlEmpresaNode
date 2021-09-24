@@ -31,7 +31,7 @@ api.post("/obtenerGeneral", md_autorizacion.ensureAuth, usuarioControlador.obten
 api.post("/login", empresaControlador.login);
 api.post("/registrarEmpresa", md_autorizacion.ensureAuth, empresaControlador.registrarEmpresa);
 api.put("/editarEmpresa", md_autorizacion.ensureAuth, empresaControlador.editarEmpresa);
-api.delete("/eliminarEmpresa", md_autorizacion.ensureAuth, empresaControlador.eliminarEmpresa)
+api.post("/eliminarEmpresa", md_autorizacion.ensureAuth, empresaControlador.eliminarEmpresa)
 api.get("/obtenerEmpresaID/:id", md_autorizacion.ensureAuth, empresaControlador.obtenerEmpresaID);
 api.get("/obtenerEmpresas", md_autorizacion.ensureAuth, empresaControlador.obtenerEmpresas);
 api.post("/subirImagen", [md_autorizacion.ensureAuth, md_subir], empresaControlador.subirImagen)
