@@ -196,6 +196,7 @@ function obtenerUsuarioDep(req, res) {
     }
 
 }
+
 module.exports = {
     registrarUsuario,
     editarUsuario,
@@ -209,5 +210,4 @@ module.exports = {
     obtenerEmpleado,
     obtenerGeneral,
     obtenerEmpleadoNombre
-
 }
