@@ -137,7 +137,7 @@ function obtenerEmpresaID(req, res) {
     var empresaID = req.params.id;
 
     if (req.user.rol === "ROL_ADMIN") {
-        Empresa.findOne({ empresaID, rol: "ROL_EMPRESA" }, (err, empresaEncontrada) => {
+        Empresa.findOne({ _id: empresaID, rol: "ROL_EMPRESA" }, (err, empresaEncontrada) => {
             if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
             if (!empresaEncontrada) return res.status(500).send({ mensaje: 'Error al obtener la empresa.' });
             return res.status(200).send({ empresaEncontrada });
