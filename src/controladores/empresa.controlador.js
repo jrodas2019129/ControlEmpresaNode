@@ -181,7 +181,7 @@ function subirImagen(req, res) {
         var nombre_extension = extension_archivo[1].toLowerCase();
         console.log(nombre_extension);
 
-        if (nombre_extension === 'png' || nombre_extension === 'jpg' || nombre_extension === 'gif' || file_extension == 'jpeg') {
+        if (nombre_extension === 'png' || nombre_extension === 'jpg' || nombre_extension === 'gif' || file_extension === 'jpeg') {
             Empresa.findByIdAndUpdate(empresaID, { imagen: nombre_archivo }, { new: true }, (err, empresaEncontrado) => {
                 return res.status(200).send({ empresaEncontrado });
             })
@@ -193,7 +193,7 @@ function subirImagen(req, res) {
 
 function obtenerImagen(req, res) {
     var archivoImagen = req.params.imagen
-    var path_file = "./src/imagenes/usuarios/" + archivoImagen;
+    var path_file = "./src/imagenes/empresas/" + archivoImagen;
 
     fs.access(path_file, (err) => {
         if (err) {
