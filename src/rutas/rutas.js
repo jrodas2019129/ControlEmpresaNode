@@ -35,6 +35,7 @@ api.get("/obtenerEmpresaID/:id", md_autorizacion.ensureAuth, empresaControlador.
 api.get("/obtenerEmpresas", md_autorizacion.ensureAuth, empresaControlador.obtenerEmpresas);
 api.post("/subirImagen", [md_autorizacion.ensureAuth, md_subir], empresaControlador.subirImagen)
 api.get('/obtenerImagen/:imagen', empresaControlador.obtenerImagen);
+api.get("/verCuenta", md_autorizacion.ensureAuth, empresaControlador.verCuenta)
 
 // Funciones Controlador Producto
 api.post("/registrarProducto", md_autorizacion.ensureAuth, productoControlador.registrarProducto);

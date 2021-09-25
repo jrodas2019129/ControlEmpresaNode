@@ -181,7 +181,7 @@ function subirImagen(req, res) {
         var nombre_extension = extension_archivo[1].toLowerCase();
         console.log(nombre_extension);
 
-        if (nombre_extension === 'png' || nombre_extension === 'jpg' || nombre_extension === 'gif') {
+        if (nombre_extension === 'png' || nombre_extension === 'jpg' || nombre_extension === 'gif' || file_extension == 'jpeg') {
             Empresa.findByIdAndUpdate(empresaID, { imagen: nombre_archivo }, { new: true }, (err, empresaEncontrado) => {
                 return res.status(200).send({ empresaEncontrado });
             })
@@ -192,18 +192,27 @@ function subirImagen(req, res) {
 }
 
 function obtenerImagen(req, res) {
-    var nombreImagen = req.params.imagen;
-    var rutaArchivo = `./src/imagenes/empresas/${nombreImagen}`;
+    var archivoImagen = req.params.imagen
+    var path_file = "./src/imagenes/usuarios/" + archivoImagen;
 
-    fs.exists(rutaArchivo, (exists) => {
-        if (exists) {
-            return res.sendFile(path.resolve(rutaArchivo));
+    fs.access(path_file, (err) => {
+        if (err) {
+            res.status(200).send({ mensaje: 'No existe la imagen' })
+
         } else {
-            return res.status(500).send({ mensaje: 'No existe la imagen' });
+            res.sendFile(path.resolve(path_file))
         }
     })
 }
 
+function verCuenta(req, res) {
+
+    Empresa.findById(req.user.sub, (err, empresaEncontrado) => {
+        if (err) return res.status(500).send({ mensaje: 'error en la peticion' });
+        if (!empresaEncontrado) return res.status(500).send({ mensaje: 'error al buscar usuario' });
+        return res.status(200).send({ empresaEncontrado });
+    })
+}
 module.exports = {
     adminApp,
     login,
@@ -213,5 +222,6 @@ module.exports = {
     obtenerEmpresaID,
     obtenerEmpresas,
     subirImagen,
-    obtenerImagen
+    obtenerImagen,
+    verCuenta
 }
