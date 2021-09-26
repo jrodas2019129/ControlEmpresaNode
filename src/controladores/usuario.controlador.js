@@ -62,18 +62,21 @@ function editarUsuario(req, res) {
     }
 }
 
+
 function eliminarUsuario(req, res) {
     var params = req.body;
 
-    if (req.user.rol === 'ROL_EMPRESA') {
-        Usuario.deleteOne({ _id: params._id }, (err, usuarioEliminada) => {
-            if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
-            if (!usuarioEliminada) return res.status(500).send({ mensaje: 'No se a podido eliminar a la Empresa' });
-
-            return res.status(200).send({ usuarioEliminada })
-        })
-    }
+    Usuario.findOne({ username: params.username }, (err, usuarioEliminada) => {
+        if (err) return res.status(500).send({ mensaje: 'Error en la peticiones' });
+        if (usuarioEliminada) {
+            Usuario.findByIdAndDelete(usuarioEliminada._id, (err, usuarioEliminada) => {
+                if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
+                return res.status(200).send({ usuarioEliminada });
+            });
+        }
+    })
 }
+
 
 function obtenerUsuarioID(req, res) {
     var empresaID = req.user.sub;

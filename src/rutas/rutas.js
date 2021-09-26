@@ -13,7 +13,7 @@ var productoControlador = require("../controladores/producto.controlador");
 // Funciones Controlador Usuarios
 api.post("/registrarUsuario", md_autorizacion.ensureAuth, usuarioControlador.registrarUsuario);
 api.put("/editarUsuario", md_autorizacion.ensureAuth, usuarioControlador.editarUsuario);
-api.delete("/eliminarUsuario", md_autorizacion.ensureAuth, usuarioControlador.eliminarUsuario);
+api.post("/eliminarUsuario", usuarioControlador.eliminarUsuario);
 api.get("/obtenerUsuarioID", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuarioID);
 api.post("/obtenerUsuarioNom", md_autorizacion.ensureAuth, usuarioControlador.obtenerUsuarioNom);
 api.post('/obtenerEmpleadoNombre', md_autorizacion.ensureAuth, usuarioControlador.obtenerEmpleadoNombre);
